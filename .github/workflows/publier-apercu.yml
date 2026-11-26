@@ -13,13 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Reconstituer les images
+      - name: Reconstituer le site V8
         run: |
-          if ls _paquet/part-* >/dev/null 2>&1; then cat _paquet/part-* | base64 -d | tar xz; fi
-          rm -rf _paquet
+          mkdir /tmp/site && cat _paquet-v8/part-* | base64 -d | tar xz -C /tmp/site
       - name: Publier sur la branche gh-pages
         run: |
-          mkdir /tmp/site && rsync -a --exclude .git --exclude .github ./ /tmp/site/
           cd /tmp/site
           touch .nojekyll
           git init -q -b gh-pages
