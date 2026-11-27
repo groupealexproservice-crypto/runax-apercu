@@ -16,6 +16,7 @@ jobs:
       - name: Reconstituer le site V8
         run: |
           mkdir /tmp/site && cat _paquet-v8/part-* | base64 -d | tar xz -C /tmp/site
+          mkdir -p /tmp/site/claude-v2 && cat _paquet-claude-v2/part-* | base64 -d | tar xz -C /tmp/site/claude-v2
       - name: Publier sur la branche gh-pages
         run: |
           cd /tmp/site
