@@ -17,6 +17,13 @@ jobs:
         run: |
           mkdir /tmp/site && cat _paquet-v8/part-* | base64 -d | tar xz -C /tmp/site
           mkdir -p /tmp/site/claude-v2 && cat _paquet-claude-v2/part-* | base64 -d | tar xz -C /tmp/site/claude-v2
+      - name: Correctif Club (aucun jour ni heure)
+        run: |
+          f=$(find /tmp/site/claude-v2 -name groupes.html)
+          for x in $f; do
+            sed -i 's#<div><dt>Jour</dt><dd>Mardi</dd></div>##; s#<dt>Heure</dt><dd>Environ 1 h par semaine</dd>#<dt>Durée</dt><dd>Environ 1 h par sortie (footing)</dd>#' "$x"
+            ! grep -q '<dd>Mardi</dd>' "$x"
+          done
       - name: Publier sur la branche gh-pages
         run: |
           cd /tmp/site
